@@ -43,10 +43,9 @@ function Virtual<C = unknown, S = unknown>({
       }}
     >
       <div
+        className="relative w-full"
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
-          position: 'relative',
-          width: '100%',
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
@@ -54,26 +53,25 @@ function Virtual<C = unknown, S = unknown>({
             <div
               key={virtualItem.key}
               ref={rowVirtualizer.measureElement}
+              className={`absolute top-0 left-0 w-full grid grid-cols-6 gap-2.5 p-2 ${
+                virtualItem.index === (state as any)[1] ? 'z-10' : 'z-0'
+              }`}
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
                 height: `${virtualItem.size}px`,
                 transform: `translateY(${virtualItem.start}px)`,
-                display: 'grid',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: '10px',
-                padding: '10px',
-                zIndex: virtualItem.index === (state as any)[1] ? 1 : 0,
               }}
             >
               {Array(perRow)
-                .fill(0)
+                .fill(null)
                 .map((_, index) => {
                   return (
                     <React.Fragment key={index}>
-                      {children(virtualItem, index, state)}
+                      {children(
+                        virtualItem,
+                        index,
+                        state,
+                        collection[virtualItem.index * perRow + index]
+                      )}
                     </React.Fragment>
                   );
                 })}

@@ -7,6 +7,7 @@ const App = () => {
     if (!value) return '-';
     return value.split('-').reverse().join('.');
   };
+  console.log('ssss', movies);
   return (
     <div className="h-screen w-screen bg-gray-200">
       <Virtual
@@ -19,9 +20,7 @@ const App = () => {
           rowVirtualizer.scrollToIndex(yAxis);
         }}
       >
-        {(virtualItem, index: number, [xAxis, yAxis]) => {
-          const movieIndex = virtualItem.index * 3 + index;
-          if (movieIndex >= movies.length) return null;
+        {(virtualItem, index: number, [xAxis, yAxis], item) => {
           return (
             <div
               className="relative transition-transform duration-[0.4s]"
@@ -33,9 +32,9 @@ const App = () => {
               }}
             >
               <MovieBox
-                title={movies[index]?.title}
-                release_date={parseDate(movies[movieIndex]?.release_date)}
-                poster_path={movies[movieIndex]?.poster_path}
+                title={item?.title}
+                release_date={parseDate(item?.release_date)}
+                poster_path={item?.poster_path}
               />
             </div>
           );

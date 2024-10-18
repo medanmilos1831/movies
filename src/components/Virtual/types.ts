@@ -18,7 +18,12 @@ export interface IVirtual<C = unknown, S = unknown> {
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
-  children: (virtualItem: VirtualItem, index: number, state: S) => ReactNode;
+  children: (
+    virtualItem: VirtualItem,
+    index: number,
+    state: S,
+    item: C
+  ) => ReactNode;
   service(props: virtualEventProps<C, S>): void;
   onChange: (rowVirtualizer: Virtualizer<any, Element>, state: S) => void;
 
