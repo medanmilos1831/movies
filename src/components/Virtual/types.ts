@@ -2,10 +2,11 @@ import { PartialKeys, VirtualizerOptions } from '@tanstack/react-virtual';
 
 export interface IVirtual<T = unknown> {
   collection: T[];
-  config: PartialKeys<
+  config?: PartialKeys<
     VirtualizerOptions<any, Element>,
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
+  perRow?: number;
 }
 
 interface IMovie {

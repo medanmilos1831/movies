@@ -2,10 +2,10 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { IVirtual } from './types';
 import { useRef, useState } from 'react';
 
-function Virtual<T = unknown>({ collection, config }: IVirtual<T>) {
+function Virtual<T = unknown>({ collection, config, perRow = 6 }: IVirtual<T>) {
   const parentRef = useRef(null);
   const defaultConfig = useRef({
-    count: Math.ceil(collection.length / 6),
+    count: Math.ceil(collection.length / perRow),
     getScrollElement: () => parentRef.current,
     estimateSize: () => 450,
   });
@@ -49,18 +49,14 @@ function Virtual<T = unknown>({ collection, config }: IVirtual<T>) {
                 gridTemplateColumns: 'repeat(6, 1fr)',
                 gap: '10px',
                 padding: '10px',
-                zIndex: virtualItem.index === yAxis ? 1 : 0,
               }}
             >
-              {/* {Array(6)
+              {Array(perRow)
                 .fill(0)
                 .map((_, index) => {
-                  const movieIndex = virtualItem.index * 3 + index;
-                  if (movieIndex >= movies.length) return null;
-
                   return (
                     <div
-                      key={movies[movieIndex].id}
+                      key={index}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -73,70 +69,13 @@ function Virtual<T = unknown>({ collection, config }: IVirtual<T>) {
                         className="relative h-full w-full"
                         style={{
                           background: 'green',
-                          transform: `scale(${
-                            virtualItem.index === yAxis && index === xAxis
-                              ? 1.2
-                              : 1
-                          })`,
-                          transition: '.4s',
-                          zIndex: 2,
                         }}
                       >
-                        <div>
-                          <img
-                            src={`https://image.tmdb.org/t/p/w500${movies[movieIndex].poster_path}`}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            padding: '.5rem',
-                          }}
-                        >
-                          <span
-                            style={
-                              {
-                                // whiteSpace: 'nowrap',
-                                // overflow: 'hidden',
-                                // textOverflow: 'ellipsis',
-                                // // maxWidth: '100%',
-                                // width: '200px',
-                                // display: 'inline-block',
-                              }
-                            }
-                          >
-                            {movies[movieIndex].title}
-                          </span>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <span>
-                              {parseDate(movies[movieIndex].release_date)}
-                            </span>
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-                                fill="currentColor"
-                                stroke="black"
-                                stroke-width="1"
-                              />
-                            </svg>
-                          </div>
-                        </div>
+                        <div></div>
                       </div>
                     </div>
                   );
-                })} */}
+                })}
             </div>
           );
         })}
