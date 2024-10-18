@@ -1,3 +1,4 @@
+import { MoviesKeyNavigationService } from '../services';
 import { MovieBox, Virtual } from '../components';
 import { movies } from '../data/movies';
 
@@ -8,14 +9,32 @@ const App = () => {
   };
   return (
     <div>
-      <Virtual collection={movies}>
-        {(virtualItem, index: number) => {
+      <Virtual
+        collection={movies}
+        service={(props) => {
+          MoviesKeyNavigationService.xAxisMoveOnArrowDown(props);
+        }}
+        initState={[0, 0]}
+      >
+        {(virtualItem, index: number, [xAxis, yAxis]) => {
+          const movieIndex = virtualItem.index * 3 + index;
+          if (movieIndex >= movies.length) return null;
           return (
-            <MovieBox
-              title={movies[index]?.title}
-              release_date={parseDate(movies[index]?.release_date)}
-              poster_path={movies[index]?.poster_path}
-            />
+            <div
+              className="relative h-full w-full"
+              style={{
+                border:
+                  virtualItem.index === yAxis && index === xAxis
+                    ? '1rem solid red'
+                    : 'none',
+              }}
+            >
+              <MovieBox
+                title={movies[index]?.title}
+                release_date={parseDate(movies[movieIndex]?.release_date)}
+                poster_path={movies[movieIndex]?.poster_path}
+              />
+            </div>
           );
         }}
       </Virtual>

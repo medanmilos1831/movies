@@ -5,15 +5,24 @@ import {
 } from '@tanstack/react-virtual';
 import { ReactNode } from 'react';
 
-export interface IVirtual<T = unknown> {
+export interface IVirtual<T = unknown, S = any> {
   collection: T[];
   config?: PartialKeys<
     VirtualizerOptions<any, Element>,
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
-  children: (virtualItem: VirtualItem, index: number) => ReactNode;
+  children: (virtualItem: VirtualItem, index: number, state: any) => ReactNode;
+  service(props: eventProps): void;
+
+  initState: any;
 }
+
+export type eventProps = {
+  event: KeyboardEvent;
+  next: React.Dispatch<React.SetStateAction<any>>;
+  collection: any;
+};
 
 export interface IMovie {
   adult: boolean;
@@ -29,3 +38,5 @@ export interface IMovie {
   ratings: { id: string; rating: number }[];
   release_date?: string;
 }
+
+export type coordinates = [xAxis: number, yAxis: number];

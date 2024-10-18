@@ -1,35 +1,51 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { IVirtual } from './types';
-import React, { useRef, useState } from 'react';
+import { coordinates, IVirtual } from './types';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-function Virtual<T = unknown>({
+function Virtual<T = unknown, S = any>({
   collection,
   config,
   perRow = 6,
   children,
-}: IVirtual<T>) {
-  const parentRef = useRef(null);
+  service,
+  initState,
+}: IVirtual<T, S>) {
+  const parentRef = useRef<HTMLDivElement>(null);
   const defaultConfig = useRef({
     count: Math.ceil(collection.length / perRow),
     getScrollElement: () => parentRef.current,
     estimateSize: () => 450,
   });
-  const [[xAxis, yAxis], setActive] = useState<[xAxis: number, yAxis: number]>([
-    0, 0,
-  ]);
+  const [[xAxis, yAxis], setActive] = useState<coordinates>([0, 0]);
+  const [state, setState] = useState<coordinates>(initState);
 
   const rowVirtualizer = useVirtualizer({
     ...defaultConfig.current,
     ...config,
   });
+  useLayoutEffect(() => {
+    let listener = (e: KeyboardEvent) => {
+      service({
+        event: e,
+        next: setState,
+        collection,
+      });
+    };
+    if (parentRef.current) {
+      parentRef.current!.addEventListener('keydown', listener);
+    }
+  }, []);
+  useEffect(() => {
+    rowVirtualizer.scrollToIndex(yAxis);
+  }, [yAxis]);
   return (
     <div
+      tabIndex={0}
       ref={parentRef}
       style={{
         height: `100vh`,
         overflow: 'auto',
       }}
-      onKeyDown={(e) => {}}
     >
       <div
         style={{
@@ -61,7 +77,7 @@ function Virtual<T = unknown>({
                 .map((_, index) => {
                   return (
                     <React.Fragment key={index}>
-                      {children(virtualItem, index)}
+                      {children(virtualItem, index, state)}
                     </React.Fragment>
                   );
                 })}
