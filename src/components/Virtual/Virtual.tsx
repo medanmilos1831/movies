@@ -1,6 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
+import React, { useEffect, useRef, useState } from 'react';
 import { IVirtual } from './types';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 function Virtual<C = unknown, S = unknown>({
   collection,
@@ -15,7 +15,7 @@ function Virtual<C = unknown, S = unknown>({
   const defaultConfig = useRef({
     count: Math.ceil(collection.length / perRow),
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 450,
+    estimateSize: () => 430,
   });
   const [state, setState] = useState<S>(initState);
 
@@ -23,18 +23,12 @@ function Virtual<C = unknown, S = unknown>({
     ...defaultConfig.current,
     ...config,
   });
-  useLayoutEffect(() => {
-    let listener = (e: KeyboardEvent) => {
-      service({
-        event: e,
-        next: setState,
-        collection,
-      });
-    };
-    if (parentRef.current) {
-      parentRef.current!.addEventListener('keydown', listener);
-    }
-  }, []);
+  const handler = (event: React.KeyboardEvent<HTMLDivElement>) =>
+    service({
+      event,
+      next: setState,
+      collection,
+    });
   useEffect(() => {
     onChange(rowVirtualizer, state);
   }, [state]);
@@ -42,16 +36,16 @@ function Virtual<C = unknown, S = unknown>({
     <div
       tabIndex={0}
       ref={parentRef}
+      onKeyDown={handler}
       style={{
         height: `100vh`,
         overflow: 'auto',
       }}
     >
       <div
+        className="relative w-full"
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
-          position: 'relative',
-          width: '100%',
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
@@ -59,25 +53,25 @@ function Virtual<C = unknown, S = unknown>({
             <div
               key={virtualItem.key}
               ref={rowVirtualizer.measureElement}
+              className={`absolute top-0 left-0 w-full grid grid-cols-6 gap-2.5 p-2 ${
+                virtualItem.index === (state as any)[1] ? 'z-10' : 'z-0'
+              }`}
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
                 height: `${virtualItem.size}px`,
                 transform: `translateY(${virtualItem.start}px)`,
-                display: 'grid',
-                gridTemplateColumns: 'repeat(6, 1fr)',
-                gap: '10px',
-                padding: '10px',
               }}
             >
               {Array(perRow)
-                .fill(0)
+                .fill(null)
                 .map((_, index) => {
                   return (
                     <React.Fragment key={index}>
-                      {children(virtualItem, index, state)}
+                      {children(
+                        virtualItem,
+                        index,
+                        state,
+                        collection[virtualItem.index * perRow + index]
+                      )}
                     </React.Fragment>
                   );
                 })}

@@ -7,7 +7,7 @@ import {
 import { ReactNode } from 'react';
 
 export type virtualEventProps<C = unknown, S = unknown> = {
-  event: KeyboardEvent;
+  event: React.KeyboardEvent<HTMLDivElement>;
   next: React.Dispatch<React.SetStateAction<S>>;
   collection: C[];
 };
@@ -18,7 +18,12 @@ export interface IVirtual<C = unknown, S = unknown> {
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
-  children: (virtualItem: VirtualItem, index: number, state: S) => ReactNode;
+  children: (
+    virtualItem: VirtualItem,
+    index: number,
+    state: S,
+    item: C
+  ) => ReactNode;
   service(props: virtualEventProps<C, S>): void;
   onChange: (rowVirtualizer: Virtualizer<any, Element>, state: S) => void;
 
