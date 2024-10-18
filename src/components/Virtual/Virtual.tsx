@@ -1,23 +1,23 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { coordinates, IVirtual } from './types';
+import { IVirtual } from './types';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-function Virtual<T = unknown, S = any>({
+function Virtual<C = unknown, S = unknown>({
   collection,
   config,
   perRow = 6,
   children,
   service,
   initState,
-}: IVirtual<T, S>) {
+  onChange,
+}: IVirtual<C, S>) {
   const parentRef = useRef<HTMLDivElement>(null);
   const defaultConfig = useRef({
     count: Math.ceil(collection.length / perRow),
     getScrollElement: () => parentRef.current,
     estimateSize: () => 450,
   });
-  const [[xAxis, yAxis], setActive] = useState<coordinates>([0, 0]);
-  const [state, setState] = useState<coordinates>(initState);
+  const [state, setState] = useState<S>(initState);
 
   const rowVirtualizer = useVirtualizer({
     ...defaultConfig.current,
@@ -36,8 +36,8 @@ function Virtual<T = unknown, S = any>({
     }
   }, []);
   useEffect(() => {
-    rowVirtualizer.scrollToIndex(yAxis);
-  }, [yAxis]);
+    onChange(rowVirtualizer, state);
+  }, [state]);
   return (
     <div
       tabIndex={0}

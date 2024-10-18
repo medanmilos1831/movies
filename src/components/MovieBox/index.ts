@@ -1,2 +1,2 @@
-export * from './Virtual';
 export * from './MovieBox';
+export * from './types';

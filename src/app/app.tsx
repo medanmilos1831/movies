@@ -1,4 +1,4 @@
-import { MoviesKeyNavigationService } from '../services';
+import { movieNavigationController } from '../services';
 import { MovieBox, Virtual } from '../components';
 import { movies } from '../data/movies';
 
@@ -12,9 +12,12 @@ const App = () => {
       <Virtual
         collection={movies}
         service={(props) => {
-          MoviesKeyNavigationService.xAxisMoveOnArrowDown(props);
+          movieNavigationController(props);
         }}
         initState={[0, 0]}
+        onChange={(rowVirtualizer, [_, yAxis]) => {
+          rowVirtualizer.scrollToIndex(yAxis);
+        }}
       >
         {(virtualItem, index: number, [xAxis, yAxis]) => {
           const movieIndex = virtualItem.index * 3 + index;
