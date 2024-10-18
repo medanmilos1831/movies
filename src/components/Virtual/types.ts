@@ -12,10 +12,10 @@ export interface IVirtual<T = unknown> {
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
-  children: (virtualItem: VirtualItem, data: any) => ReactNode;
+  children: (virtualItem: VirtualItem, index: number) => ReactNode;
 }
 
-interface IMovie {
+export interface IMovie {
   adult: boolean;
   backdrop_path: any;
   genre_ids: number[];
@@ -23,9 +23,9 @@ interface IMovie {
   original_language: string;
   original_title: string;
   overview: string;
-  poster_path: string;
+  poster_path: string | null;
   title: string;
   video: boolean;
   ratings: { id: string; rating: number }[];
-  release_date: string;
+  release_date?: string;
 }
