@@ -1,8 +1,13 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { IVirtual } from './types';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-function Virtual<T = unknown>({ collection, config, perRow = 6 }: IVirtual<T>) {
+function Virtual<T = unknown>({
+  collection,
+  config,
+  perRow = 6,
+  children,
+}: IVirtual<T>) {
   const parentRef = useRef(null);
   const defaultConfig = useRef({
     count: Math.ceil(collection.length / perRow),
@@ -55,25 +60,9 @@ function Virtual<T = unknown>({ collection, config, perRow = 6 }: IVirtual<T>) {
                 .fill(0)
                 .map((_, index) => {
                   return (
-                    <div
-                      key={index}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'white',
-                        maxWidth: '100%',
-                      }}
-                    >
-                      <div
-                        className="relative h-full w-full"
-                        style={{
-                          background: 'green',
-                        }}
-                      >
-                        <div></div>
-                      </div>
-                    </div>
+                    <React.Fragment key={index}>
+                      {children(virtualItem, 1)}
+                    </React.Fragment>
                   );
                 })}
             </div>

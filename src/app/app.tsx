@@ -1,4 +1,4 @@
-import { Virtual } from '../components';
+import { Virtual, MovieBox } from '../components';
 
 const App = () => {
   return (
@@ -8,7 +8,11 @@ const App = () => {
           1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5,
           6, 1, 2, 3, 4, 5, 6,
         ]}
-      />
+      >
+        {(virtualItem: any, data: any) => {
+          return <MovieBox />;
+        }}
+      </Virtual>
     </div>
   );
 };

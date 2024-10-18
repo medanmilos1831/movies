@@ -1,4 +1,9 @@
-import { PartialKeys, VirtualizerOptions } from '@tanstack/react-virtual';
+import {
+  PartialKeys,
+  VirtualItem,
+  VirtualizerOptions,
+} from '@tanstack/react-virtual';
+import { ReactNode } from 'react';
 
 export interface IVirtual<T = unknown> {
   collection: T[];
@@ -7,6 +12,7 @@ export interface IVirtual<T = unknown> {
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
+  children: (virtualItem: VirtualItem, data: any) => ReactNode;
 }
 
 interface IMovie {
