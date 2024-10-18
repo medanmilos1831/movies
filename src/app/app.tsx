@@ -1,11 +1,16 @@
-import NxWelcome from './nx-welcome';
+import { Virtual } from '../components';
 
-export function App() {
+const App = () => {
   return (
     <div>
-      <NxWelcome title="movies" />
+      <Virtual
+        collection={[
+          1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5,
+          6, 1, 2, 3, 4, 5, 6,
+        ]}
+      />
     </div>
   );
-}
+};
 
-export default App;
+export { App };
