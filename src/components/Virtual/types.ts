@@ -7,7 +7,7 @@ import {
 import { ReactNode } from 'react';
 
 export type virtualEventProps<C = unknown, S = unknown> = {
-  event: KeyboardEvent;
+  event: React.KeyboardEvent<HTMLDivElement>;
   next: React.Dispatch<React.SetStateAction<S>>;
   collection: C[];
 };

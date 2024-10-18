@@ -8,7 +8,7 @@ const App = () => {
     return value.split('-').reverse().join('.');
   };
   return (
-    <div>
+    <div className="h-screen w-screen bg-gray-200">
       <Virtual
         collection={movies}
         service={(props) => {
@@ -24,12 +24,12 @@ const App = () => {
           if (movieIndex >= movies.length) return null;
           return (
             <div
-              className="relative h-full w-full"
+              className="relative transition-transform duration-[0.4s]"
               style={{
-                border:
-                  virtualItem.index === yAxis && index === xAxis
-                    ? '1rem solid red'
-                    : 'none',
+                transform: `scale(${
+                  virtualItem.index === yAxis && index === xAxis ? 1.2 : 1
+                })`,
+                zIndex: virtualItem.index === yAxis && index === xAxis ? 2 : 1,
               }}
             >
               <MovieBox

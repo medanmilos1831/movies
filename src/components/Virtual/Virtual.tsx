@@ -1,6 +1,6 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
+import React, { useEffect, useRef, useState } from 'react';
 import { IVirtual } from './types';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 function Virtual<C = unknown, S = unknown>({
   collection,
@@ -15,7 +15,7 @@ function Virtual<C = unknown, S = unknown>({
   const defaultConfig = useRef({
     count: Math.ceil(collection.length / perRow),
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 450,
+    estimateSize: () => 430,
   });
   const [state, setState] = useState<S>(initState);
 
@@ -23,18 +23,12 @@ function Virtual<C = unknown, S = unknown>({
     ...defaultConfig.current,
     ...config,
   });
-  useLayoutEffect(() => {
-    let listener = (e: KeyboardEvent) => {
-      service({
-        event: e,
-        next: setState,
-        collection,
-      });
-    };
-    if (parentRef.current) {
-      parentRef.current!.addEventListener('keydown', listener);
-    }
-  }, []);
+  const handler = (event: React.KeyboardEvent<HTMLDivElement>) =>
+    service({
+      event,
+      next: setState,
+      collection,
+    });
   useEffect(() => {
     onChange(rowVirtualizer, state);
   }, [state]);
@@ -42,6 +36,7 @@ function Virtual<C = unknown, S = unknown>({
     <div
       tabIndex={0}
       ref={parentRef}
+      onKeyDown={handler}
       style={{
         height: `100vh`,
         overflow: 'auto',
@@ -70,6 +65,7 @@ function Virtual<C = unknown, S = unknown>({
                 gridTemplateColumns: 'repeat(6, 1fr)',
                 gap: '10px',
                 padding: '10px',
+                zIndex: virtualItem.index === (state as any)[1] ? 1 : 0,
               }}
             >
               {Array(perRow)
