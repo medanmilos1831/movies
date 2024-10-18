@@ -1,31 +1,26 @@
 import {
   PartialKeys,
   VirtualItem,
+  Virtualizer,
   VirtualizerOptions,
 } from '@tanstack/react-virtual';
 import { ReactNode } from 'react';
 
-export interface IVirtual<T = unknown> {
-  collection: T[];
+export type virtualEventProps<C = unknown, S = unknown> = {
+  event: KeyboardEvent;
+  next: React.Dispatch<React.SetStateAction<S>>;
+  collection: C[];
+};
+export interface IVirtual<C = unknown, S = unknown> {
+  collection: C[];
   config?: PartialKeys<
     VirtualizerOptions<any, Element>,
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
   >;
   perRow?: number;
-  children: (virtualItem: VirtualItem, index: number) => ReactNode;
-}
+  children: (virtualItem: VirtualItem, index: number, state: S) => ReactNode;
+  service(props: virtualEventProps<C, S>): void;
+  onChange: (rowVirtualizer: Virtualizer<any, Element>, state: S) => void;
 
-export interface IMovie {
-  adult: boolean;
-  backdrop_path: any;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  poster_path: string | null;
-  title: string;
-  video: boolean;
-  ratings: { id: string; rating: number }[];
-  release_date?: string;
+  initState: S;
 }
