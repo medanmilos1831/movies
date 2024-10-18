@@ -61,7 +61,7 @@ function Virtual<T = unknown>({
                 .map((_, index) => {
                   return (
                     <React.Fragment key={index}>
-                      {children(virtualItem, 1)}
+                      {children(virtualItem, index)}
                     </React.Fragment>
                   );
                 })}

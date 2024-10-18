@@ -1,4 +1,12 @@
-const MovieBox = () => {
+const MovieBox = ({
+  title,
+  release_date,
+  poster_path,
+}: {
+  title: string;
+  release_date: any;
+  poster_path: any;
+}) => {
   return (
     <div
       style={{
@@ -12,36 +20,39 @@ const MovieBox = () => {
       <div
         className="relative h-full w-full"
         style={{
-          background: 'green',
           display: 'flex',
           flexDirection: 'column',
         }}
       >
         <div
           style={{
-            background: 'red',
             height: '75%',
           }}
         >
-          <span>image</span>
+          <img
+            style={{
+              height: '100%',
+            }}
+            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+          />
         </div>
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             padding: '.5rem',
-            background: 'blue',
+            background: 'gray',
             flexGrow: '1',
           }}
         >
-          <span>title</span>
+          <span>{title}</span>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
             }}
           >
-            <span>date</span>
+            <span>{release_date}</span>
             <svg
               width="24"
               height="24"
