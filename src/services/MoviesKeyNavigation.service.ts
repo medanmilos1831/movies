@@ -1,10 +1,10 @@
 import { virtualEventProps, IMovie } from '../components';
 
-export function movieNavigationController({
+export function movieNavigationService({
   event,
   next,
   collection,
-}: virtualEventProps<IMovie, number[]>): any {
+}: virtualEventProps<IMovie, number[]>) {
   const events: {
     [key: string]: (
       next: virtualEventProps<unknown, number[]>['next'],

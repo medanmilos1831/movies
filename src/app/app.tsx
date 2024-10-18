@@ -1,4 +1,4 @@
-import { movieNavigationController } from '../services';
+import { movieNavigationService } from '../services';
 import { MovieBox, Virtual } from '../components';
 import { movies } from '../data/movies';
 
@@ -12,7 +12,7 @@ const App = () => {
       <Virtual
         collection={movies}
         service={(props) => {
-          movieNavigationController(props);
+          movieNavigationService(props);
         }}
         initState={[0, 0]}
         onChange={(rowVirtualizer, [_, yAxis]) => {
