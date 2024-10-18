@@ -1,11 +1,11 @@
-import NxWelcome from './nx-welcome';
+import { Virtual } from '../components';
 
-export function App() {
+const App = () => {
   return (
     <div>
-      <NxWelcome title="movies" />
+      <Virtual />
     </div>
   );
-}
+};
 
-export default App;
+export { App };
