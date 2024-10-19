@@ -42,5 +42,6 @@ export function movieNavigationService({
       });
     },
   };
+  if (!events[event.key]) return;
   events[event.key](next, collection);
 }
