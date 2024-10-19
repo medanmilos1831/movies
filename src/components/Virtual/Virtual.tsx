@@ -23,18 +23,22 @@ function Virtual<C = unknown, S = unknown>({
     ...defaultConfig.current,
     ...config,
   });
-  const handler = (event: React.KeyboardEvent<HTMLDivElement>) =>
+  const handler = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (
+      !['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(event.key)
+    )
+      return;
     service({
       event,
       next: setState,
       collection,
     });
+  };
   useEffect(() => {
     onChange(rowVirtualizer, state);
   }, [state]);
   return (
     <div
-      tabIndex={0}
       ref={parentRef}
       onKeyDown={handler}
       style={{
