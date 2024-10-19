@@ -1,4 +1,5 @@
-export const movies = [
+import { orderBy, uniqBy } from 'lodash';
+export const response = [
   {
     adult: false,
     backdrop_path: null,
@@ -29370,3 +29371,12 @@ export const movies = [
     release_date: '1978-08-03',
   },
 ];
+let movies = orderBy(response, [
+  (movie) => {
+    return movie.ratings.find((rating) => rating.id === 'imdb')?.rating || 0;
+  },
+]);
+
+movies = uniqBy(movies, 'id');
+
+export { movies };
