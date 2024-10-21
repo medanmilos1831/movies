@@ -54,32 +54,9 @@ function Virtual<C = unknown, S = unknown>({
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
           return (
-            <div
-              key={virtualItem.key}
-              ref={rowVirtualizer.measureElement}
-              className={`absolute top-0 left-0 w-full grid grid-cols-6 gap-2.5 p-2 ${
-                virtualItem.index === (state as any)[1] ? 'z-10' : 'z-0'
-              }`}
-              style={{
-                height: `${virtualItem.size}px`,
-                transform: `translateY(${virtualItem.start}px)`,
-              }}
-            >
-              {Array(perRow)
-                .fill(null)
-                .map((_, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      {children(
-                        virtualItem,
-                        index,
-                        state,
-                        collection[virtualItem.index * perRow + index]
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-            </div>
+            <>
+              {children(virtualItem, rowVirtualizer, state, collection, perRow)}
+            </>
           );
         })}
       </div>

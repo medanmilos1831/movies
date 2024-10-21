@@ -47,15 +47,18 @@ const MovieBox = ({
           }}
         >
           <div className="absolute left-0 top-0 h-full w-full">
-            <img
-              className="h-full w-full"
-              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-            />
+            {poster_path ? (
+              <img
+                className="h-full w-full"
+                src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              />
+            ) : null}
           </div>
         </div>
+
         <div className="p-2 flex-grow relative bg-white">
           <div className="absolute left-0 top-0 flex flex-col h-full justify-between p-2 w-full">
-            <span className="text-nowrap overflow-hidden text-ellipsis inline-block text-black w-[200px]">
+            <span className="text-nowrap overflow-hidden text-ellipsis inline-block text-black">
               {title}
             </span>
             <div className="relative flex text-black justify-between">
