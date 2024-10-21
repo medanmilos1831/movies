@@ -20,12 +20,13 @@ export interface IVirtual<C = unknown, S = unknown> {
   perRow?: number;
   children: (
     virtualItem: VirtualItem,
-    index: number,
+    rowVirtualizer: Virtualizer<any, Element>,
     state: S,
-    item: C
+    collection: C[],
+    perRow: number
   ) => ReactNode;
   service(props: virtualEventProps<C, S>): void;
   onChange: (rowVirtualizer: Virtualizer<any, Element>, state: S) => void;
-
+  renderPera?: any;
   initState: S;
 }
